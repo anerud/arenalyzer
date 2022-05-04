@@ -17,6 +17,7 @@ class MatchParser:
         self.matches = None
 
         self.regex_match_type = read_relative_file_path('regex/match_type.re').replace('\n', '')
+        self.regex_match_tactic = read_relative_file_path('regex/match_tactic.re').replace('\n', '')
         self.regex_match_summary = read_relative_file_path('regex/match_summary.re').replace('\n', '')
         self.regex_total_damage = read_relative_file_path('regex/total_damage.re').replace('\n', '')
         self.regex_total_damage_with_parries_blocks = read_relative_file_path('regex/total_damage_with_parries_blocks.re').replace('\n', '')
@@ -46,9 +47,19 @@ class MatchParser:
         )
         return new_matches
 
+    def __replace_characters(self, string):
+        return string.replace('=c3=a4', 'ä').replace('=a3=a5', 'å')
+
+
     def _parse_match_type(self, match_html):
         try:
-            return re.findall(self.regex_match_type, match_html)[0].lower()
+            return self.__replace_characters(re.findall(self.regex_match_type, match_html)[0].lower())
+        except IndexError:
+            return ""
+
+    def _parse_match_tactic(self, match_html):
+        try:
+            return self.__replace_characters(re.findall(self.regex_match_tactic, match_html)[0].lower())
         except IndexError:
             return ""
 
@@ -107,8 +118,9 @@ class MatchParser:
         # Clean some shit away
         matches['match_html'] = matches['match_html'].apply(lambda html: html.replace('=\n', ''))
 
-        # Get match type
+        # Get match info
         matches['match_type'] = matches['match_html'].apply(self._parse_match_type)
+        matches['match_tactic'] = matches['match_html'].apply(self._parse_match_tactic)
 
         # Get summary
         matches['match_summary'] = matches['match_html'].apply(self._parse_summary)
@@ -139,3 +151,8 @@ class MatchParser:
         print(f"Persisted {len(self.matches)} new matches!")
 
         return self.matches
+
+
+if __name__ == '__main__':
+    matches = MatchParser(gladiator_name='Ledarorcen Lurtz').parse_matches()
+    print(matches['match_tactic'])
