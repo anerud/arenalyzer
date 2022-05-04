@@ -39,10 +39,10 @@ class MatchParser:
         new_matches = pd.DataFrame(
             data=[
                 # [match_id, match_html]
-                [match_id, read_relative_file_path(os.path.join(self.match_folder, str(match_id) + '.mht'))]
+                [self.gladiator_name, match_id, read_relative_file_path(os.path.join(self.match_folder, str(match_id) + '.mht'))]
                 for match_id in new_match_ids
             ],
-            columns=['match_id', 'match_html']
+            columns=['gladiator_name', 'match_id', 'match_html']
         )
         return new_matches
 
@@ -127,8 +127,11 @@ class MatchParser:
         matches['missed_attacks'] = matches['match_summary'].apply(self._parse_missed_attacks)
         matches['partial_missed_attacks'] = matches['match_summary'].apply(self._parse_partial_missed_attacks)
 
-        # Set match_id as index
+        # Cleanup
         matches.set_index('match_id', inplace=True)
+        matches.drop('match_html', axis=1, inplace=True)  # Do not save entire html in database
+        matches.drop('match_summary', axis=1, inplace=True)  # Do not save summary in database
+        matches.dropna(inplace=True)
 
         # Persist matches
         self.matches = matches

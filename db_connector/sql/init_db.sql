@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS matches(
     match_id SERIAL PRIMARY KEY,
-    match_html TEXT,
+    gladiator_name TEXT,
     match_type TEXT,
-    match_summary TEXT,
     total_damage INT,
     total_damage_with_parries_blocks INT,
     highest_damage INT,
