@@ -16,6 +16,7 @@ class MatchParser:
         self.match_folder = match_folder
         self.matches = None
 
+        self.regex_gladiator_level = read_relative_file_path('regex/gladiator_level.re').replace('\n', '')
         self.regex_match_type = read_relative_file_path('regex/match_type.re').replace('\n', '')
         self.regex_match_tactic = read_relative_file_path('regex/match_tactic.re').replace('\n', '')
         self.regex_match_summary = read_relative_file_path('regex/match_summary.re').replace('\n', '')
@@ -50,6 +51,16 @@ class MatchParser:
     def __replace_characters(self, string):
         return string.replace('=c3=a4', 'ä').replace('=a3=a5', 'å')
 
+    def _parse_gladiator_level(self, match_html):
+        try:
+            return self.__replace_characters(
+                re.findall(
+                    self.regex_gladiator_level.format(GLADIATOR_NAME=self.gladiator_name),
+                    match_html
+                )[0].lower()
+            )
+        except IndexError:
+            return ""
 
     def _parse_match_type(self, match_html):
         try:
@@ -119,6 +130,7 @@ class MatchParser:
         matches['match_html'] = matches['match_html'].apply(lambda html: html.replace('=\n', ''))
 
         # Get match info
+        matches['gladiator_level'] = matches['match_html'].apply(self._parse_gladiator_level)
         matches['match_type'] = matches['match_html'].apply(self._parse_match_type)
         matches['match_tactic'] = matches['match_html'].apply(self._parse_match_tactic)
 
@@ -155,4 +167,3 @@ class MatchParser:
 
 if __name__ == '__main__':
     matches = MatchParser(gladiator_name='Ledarorcen Lurtz').parse_matches()
-    print(matches['match_tactic'])
