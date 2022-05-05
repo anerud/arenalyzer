@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS matches(
     match_id SERIAL PRIMARY KEY,
     gladiator_name TEXT,
-    gladiator_level INT,
+--    gladiator_level INT,
     match_type TEXT,
     match_tactic TEXT,
     total_damage INT,

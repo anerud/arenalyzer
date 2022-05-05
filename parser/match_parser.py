@@ -129,8 +129,11 @@ class MatchParser:
         # Clean some shit away
         matches['match_html'] = matches['match_html'].apply(lambda html: html.replace('=\n', ''))
 
+        # Get only files with gladiator_name
+        matches = matches[matches['match_html'].str.contains(f'{self.gladiator_name}')]
+
         # Get match info
-        matches['gladiator_level'] = matches['match_html'].apply(self._parse_gladiator_level)
+        #matches['gladiator_level'] = matches['match_html'].apply(self._parse_gladiator_level)
         matches['match_type'] = matches['match_html'].apply(self._parse_match_type)
         matches['match_tactic'] = matches['match_html'].apply(self._parse_match_tactic)
 
@@ -166,4 +169,4 @@ class MatchParser:
 
 
 if __name__ == '__main__':
-    matches = MatchParser(gladiator_name='Ledarorcen Lurtz').parse_matches()
+    matches = MatchParser(gladiator_name='Master Pain').parse_matches()
