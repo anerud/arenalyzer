@@ -1,14 +1,14 @@
 from analyzer.match_analyzer import MatchAnalyzer
 from parser.match_parser import MatchParser
 
-GLADIATOR_NAME = 'Master Pain'
+GLADIATOR_NAME = 'Ledarorcen Lurtz'
 MIN_LEVEL = 1
 MAX_LEVEL = 99
-MAX_NR_GAMES = 10000
+MAX_NR_GAMES = 10
 
 if __name__ == '__main__':
     # Parse new matches
-    MatchParser(GLADIATOR_NAME).parse_matches()
+    matches, match_summaries = MatchParser(GLADIATOR_NAME, '../matches/ledarorcen_defensiva').parse_matches()
 
     # Analyze matches
     MatchAnalyzer().analyze(

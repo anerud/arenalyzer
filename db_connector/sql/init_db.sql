@@ -1,9 +1,15 @@
-CREATE TABLE IF NOT EXISTS matches(
-    match_id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS match(
+    id SERIAL PRIMARY KEY,
+    match_id INT,
+    match_type TEXT,
+    match_tactic TEXT
+);
+
+CREATE TABLE IF NOT EXISTS match_summary(
+    id SERIAL PRIMARY KEY,
+    match_id INT,
     gladiator_name TEXT,
 --    gladiator_level INT,
-    match_type TEXT,
-    match_tactic TEXT,
     total_damage INT,
     total_damage_with_parries_blocks INT,
     highest_damage INT,

@@ -2,7 +2,7 @@
 <strong>
 <[gr][er][ed][e]?[n]?>
 [<]?[s]?[p]?[a]?[n]?[ ]?[c]?[l]?[a]?[s]?[s]?[=]?[3]?[D]?["]?[u]?[n]?[d]?[e]?[r]?[l]?[i]?[n]?[e]?["]?[>]?
-{GLADIATOR_NAME}
+[\w\s]*
 [<]?[/]?[s]?[p]?[a]?[n]?[>]?
 </[gr][er][ed][e]?[n]?>
 </strong>
@@ -14,7 +14,7 @@
  <strong>
 \d*
 </strong>
- inkl. pareringar/blockeringar\), hade en h=C3=B6gsta skada p=C3=A5
+ inkl. pareringar/blockeringar\), hade en högsta skada på
  <strong>
 \d*
 </strong>,
@@ -26,7 +26,7 @@
  <strong>
 \d*
 </strong>
- g=C3=A5nger, undvek
+ gånger, undvek
  <strong>
 \d*
 </strong>

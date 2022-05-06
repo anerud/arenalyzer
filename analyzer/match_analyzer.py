@@ -6,16 +6,17 @@ class MatchAnalyzer:
         self.db_connector = DBConnector()
 
     def analyze(self, gladiator_name, min_level=1, max_level=99, max_nr_matches=10000):
-        matches = self.db_connector.get_matches(
+        match_summary = self.db_connector.get_match_summary(
             gladiator_name=gladiator_name,
             min_level=min_level,
             max_level=max_level,
             max_nr_matches=max_nr_matches,
         )
+        print(match_summary['received_attacks'])
         print(f"Running analysis for gladiator name: {gladiator_name}...")
         print()
-        self.print_summary(matches)
-        self.print_metrics_per_match_type(matches)
+        self.print_summary(match_summary)
+        self.print_metrics_per_match_type(match_summary)
 
     def print_summary(self, matches):
         print()
