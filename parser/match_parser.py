@@ -9,9 +9,8 @@ from tools.utils import read_relative_file_path, get_relative_file_path
 
 
 class MatchParser:
-    def __init__(self, gladiator_name, match_folder='../matches'):
+    def __init__(self, match_folder='../matches'):
         self.db_connector = DBConnector()
-        self.gladiator_name = gladiator_name
         self.match_folder = match_folder
         self.regex_gladiator_name = read_relative_file_path('regex/gladiator_name.re').replace('\n', '')
         self.regex_gladiator_level = read_relative_file_path('regex/gladiator_level.re').replace('\n', '')
@@ -33,8 +32,13 @@ class MatchParser:
         self.regex_partial_missed_attacks = read_relative_file_path('regex/partial_missed_attacks.re').replace('\n', '')
 
     def __read_matches(self):
-        match_files = os.listdir(get_relative_file_path(self.match_folder))
-        match_ids = [f.split('.')[0] for f in match_files]
+        relative_folder = get_relative_file_path(self.match_folder)
+        match_files = os.listdir(relative_folder)
+        match_ids = [
+            f.split('.')[0]
+            for f in match_files
+            if os.path.isfile(os.path.join(relative_folder, f))
+        ]
         new_match_ids = self.db_connector.get_nonexisting_matches(match_ids)
         new_matches = pd.DataFrame(
             data=[
@@ -61,7 +65,7 @@ class MatchParser:
 
     def _parse_gladiator_level(self, match_html):
         try:
-            return re.findall(self.regex_gladiator_level.format(GLADIATOR_NAME=self.gladiator_name), match_html)[0]
+            return re.findall(self.regex_gladiator_level, match_html)[0]
         except IndexError:
             return ""
 
@@ -86,9 +90,6 @@ class MatchParser:
     def __parse_matches(self, matches):
         # Clean some shit away
         matches['match_html'] = matches['match_html'].apply(self.__replace_characters)
-
-        # Get only files with gladiator_name
-        matches = matches[matches['match_html'].str.contains(f'{self.gladiator_name}')]
 
         # Get match info
         matches['match_type'] = matches['match_html'].apply(self._parse_text, args=[self.regex_match_type])
@@ -150,4 +151,4 @@ class MatchParser:
 
 
 if __name__ == '__main__':
-    matches, match_summaries = MatchParser(gladiator_name='Master Pain').parse_matches()
+    matches, match_summaries = MatchParser().parse_matches()

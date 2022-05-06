@@ -12,7 +12,6 @@ class MatchAnalyzer:
             max_level=max_level,
             max_nr_matches=max_nr_matches,
         )
-        print(match_summary['received_attacks'])
         print(f"Running analysis for gladiator name: {gladiator_name}...")
         print()
         self.print_summary(match_summary)

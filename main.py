@@ -8,7 +8,7 @@ MAX_NR_GAMES = 10
 
 if __name__ == '__main__':
     # Parse new matches
-    matches, match_summaries = MatchParser(GLADIATOR_NAME, '../matches/ledarorcen_defensiva').parse_matches()
+    matches, match_summaries = MatchParser().parse_matches()
 
     # Analyze matches
     MatchAnalyzer().analyze(
