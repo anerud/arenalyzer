@@ -9,6 +9,7 @@ class DBConnector:
     # Table names
     TABLE_MATCHES = 'match'
     TABLE_MATCH_SUMMARY = 'match_summary'
+    TABLE_ROUND = 'round'
 
     # Queries
     QUERY_NONEXISTING_MATCHES = 'sql/nonexisting_matches.sql'
@@ -24,6 +25,9 @@ class DBConnector:
 
     def persist_match_summaries(self, match_summaries):
         match_summaries.to_sql(DBConnector.TABLE_MATCH_SUMMARY, con=self.psql_engine, if_exists='append')
+
+    def persist_rounds(self, rounds):
+        rounds.to_sql(DBConnector.TABLE_ROUND, con=self.psql_engine, if_exists='append')
 
     def get_nonexisting_matches(self, match_ids):
         formatted_match_ids = ", ".join(str(match_id) for match_id in match_ids)

@@ -37,29 +37,32 @@ class MatchAnalyzer:
 
             self.print_metrics(matches=matches_of_type)
 
+    def safe_divide(self, a, b):
+        return 0 if b == 0 else a/b
+
     def print_metrics(self, matches):
         print("GIVEN ATTACKS")
         print(f"    Total damage: {sum(matches['total_damage'])}")
-        print(f"    Average damage per match: {sum(matches['total_damage']) / len(matches)}")
+        print(f"    Average damage per match: {self.safe_divide(sum(matches['total_damage']), len(matches))}")
 
         print("RECEIVED ATTACKS")
         print(f"    Total damage received: {sum(matches['received_damage'])}")
         print(f"    Total nr received attacks: {sum(matches['received_attacks'])}")
-        print(f"    Average damage received per match: {sum(matches['received_damage']) / len(matches)}")
-        print(f"    Average nr received attacks per match: {sum(matches['received_attacks']) / len(matches)}")
+        print(f"    Average damage received per match: {self.safe_divide(sum(matches['received_damage']), len(matches))}")
+        print(f"    Average nr received attacks per match: {self.safe_divide(sum(matches['received_attacks']), len(matches))}")
 
         print("BLOCK")
         print(f"    Total nr times blocked: {sum(matches['blocked_attacks'])}")
-        print(f"    Average nr blocks per match: {sum(matches['blocked_attacks']) / len(matches)}")
-        print(f"    Block rate: {sum(matches['blocked_attacks']) / sum(matches['received_attacks'])}")
+        print(f"    Average nr blocks per match: {self.safe_divide(sum(matches['blocked_attacks']), len(matches))}")
+        print(f"    Block rate: {self.safe_divide(sum(matches['blocked_attacks']), sum(matches['received_attacks']) - sum(matches['dodged_attacks']))}")
 
         print("DODGE")
         print(f"    Total nr times dodged: {sum(matches['dodged_attacks'])}")
-        print(f"    Average nr dodges per match: {sum(matches['dodged_attacks']) / len(matches)}")
-        print(f"    Dodge rate: {sum(matches['dodged_attacks']) / sum(matches['received_attacks'])}")
+        print(f"    Average nr dodges per match: {self.safe_divide(sum(matches['dodged_attacks']), len(matches))}")
+        print(f"    Dodge rate: {self.safe_divide(sum(matches['dodged_attacks']), sum(matches['received_attacks']))}")
 
         print("MISSES")
         print(f"    Total nr times missed: {sum(matches['missed_attacks'])}")
-        print(f"    Average nr misses per match: {sum(matches['missed_attacks']) / len(matches)}")
+        print(f"    Average nr misses per match: {self.safe_divide(sum(matches['missed_attacks']), len(matches))}")
 
 
